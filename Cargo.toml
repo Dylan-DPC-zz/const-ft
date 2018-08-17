@@ -1,0 +1,6 @@
+[package]
+name = "const-ft"
+version = "0.1.0"
+authors = ["dylan_DPC <dylan.dpc@gmail.com>"]
+
+[dependencies]
