@@ -87,30 +87,29 @@ macro_rules! const_ft {
     };
 }
 
-
 #[cfg(test)]
 mod tests {
     const_ft! {
-            pub fn public_with_no_args() -> u32 {
-                1u32
-            }
+        pub fn public_with_no_args() -> u32 {
+            1u32
         }
+    }
 
     const_ft! {
-            pub fn public_with_args(x: u32) -> u32 {
-                x
-            }
+        pub fn public_with_args(x: u32) -> u32 {
+            x
         }
+    }
 
     const_ft! {
             pub fn public_with_no_return() {}
     }
 
     const_ft! {
-        fn private_with_no_args() -> u32 {
-            1u32
-        }
-        }
+    fn private_with_no_args() -> u32 {
+        1u32
+    }
+    }
 
     const_ft! {
         fn private_with_args(x: u32, _y: u32) -> u32 {
@@ -135,7 +134,6 @@ mod tests {
         assert_eq!(private_with_no_args(), 1u32);
         assert_eq!(private_with_args(1u32, 2u32), 1u32);
         assert_eq!(pub_crate_with_args(1u32), 1u32);
-
 
         public_with_no_return();
         private_with_no_return(1u32);
