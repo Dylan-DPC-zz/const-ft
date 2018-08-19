@@ -1,4 +1,41 @@
 #![cfg_attr(feature = "const_fn", feature(const_fn))]
+#![no_std]
+
+//! A macro for easy generation and wrapping of a const function under a const_fn feature gate.
+//!
+//! The macro will generate two functions with the same name - one const fn for when the feature gate
+//! `const_fn` is enabled and the other for the all other cases.
+//!
+//! `const` fns are unstable, and the const_fn feature gate should be enabled only on nightly.
+//!
+//! The macro accepts a single function block, as an input. To include multiple functions, you have
+//! to use separate macro calls. The macro works for public, private and pub(x) functions.
+//!
+//! To install this crate as a dependency, add it to your Cargo.toml:
+//!
+//! ```toml
+//! const_ft = { version =  "0.1", features = "const_fn" }
+//! ```
+//!
+//! Example:
+//!
+//! #![cfg_attr(feature = "const_fn", feature(const_fn))]
+//!
+//! #[macro_use]
+//! extern crate const_ft;
+//!
+//! const_ft! {
+//!      pub fn some_function() -> u32 {
+//!         1u32
+//!      }
+//! }
+//!
+//!
+//! fn main() {
+//!     assert_eq!(some_function(), 1u32);
+//! }
+//! ```
+//!
 
 #[macro_export]
 macro_rules! const_ft {
@@ -38,7 +75,7 @@ macro_rules! const_ft {
         pub($scope) const fn $fn_name($($arg : $typ,)*) -> $ret $body
 
         #[cfg(not(feature = "const_fn"))]
-        pub($scope) fn $fn_name($($arg : $typ,)*) -> $ret $body
+         pub($scope) fn $fn_name($($arg : $typ,)*) -> $ret $body
     };
 
     (pub($scope:ident) fn $fn_name:ident($($arg:ident : $typ:ty),*) $body:block ) => {
@@ -92,7 +129,7 @@ mod tests {
     }
 
     #[test]
-    fn it_works() {
+    pub fn it_works() {
         assert_eq!(public_with_no_args(), 1u32);
         assert_eq!(public_with_args(1u32), 1u32);
         assert_eq!(private_with_no_args(), 1u32);

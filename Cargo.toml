@@ -7,3 +7,4 @@ authors = ["dylan_DPC <dylan.dpc@gmail.com>"]
 
 [features]
 const_fn = []
+default = []
