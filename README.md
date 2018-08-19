@@ -11,14 +11,14 @@ A macro for easy generation and wrapping of a const function under a const_fn fe
 ### Installation: 
  
 ```toml
- const_ft = { version =  "0.1" }
+ const-ft = { version =  "0.1" }
  ```
 
 You can enable the feature by having a feature in the project  enable the feature from the crate:
 
 ```toml
 [features]
-const = ["const_ft/const_fn"]
+const = ["const-ft/const_fn"]
 ```
 ### Usage:
 ```rust
