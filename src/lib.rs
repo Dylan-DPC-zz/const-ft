@@ -19,6 +19,7 @@
 //!
 //! Example:
 //!
+//! ```rust
 //! #![cfg_attr(feature = "const_fn", feature(const_fn))]
 //!
 //! #[macro_use]
