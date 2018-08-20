@@ -86,6 +86,38 @@ macro_rules! const_ft {
         #[cfg(not(feature = "const_fn"))]
         pub($scope) fn $fn_name($($arg : $typ,)*) $body
     };
+
+    (fn $fn_name:ident( $self_:ident, $($arg:ident : $typ:ty),*) $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name($self_:ident, $($arg : $typ,)*) $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name($self_:ident, $($arg : $typ,)*) $body
+    };
+    (fn $fn_name:ident($self_:ident, $($arg:ident : $typ:ty),*) -> $ret: ty $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name($self_, $($arg : $typ,)*) -> $ret $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name($self_, $($arg : $typ,)*) -> $ret $body
+    };
+
+   (pub fn $fn_name:ident(&$self_: ident, $($arg:ident : $typ:ty),*) -> $ret: ty $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name(&$self_, $($arg : $typ,)*) -> $ret $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name(&$self_, $($arg : $typ,)*) -> $ret $body
+    };
+
+    (pub fn $fn_name:ident(&$self_: ident, $($arg:ident : $typ:ty),*) -> $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name(&$self_, $($arg : $typ,)*) $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name(&$self_, $($arg : $typ,)*) $body
+    };
+
 }
 
 #[cfg(test)]
@@ -128,6 +160,15 @@ mod tests {
         }
     }
 
+    struct Foo(u32);
+    impl Foo {
+        const_ft! {
+        pub fn pub_with_self(&self, _x: u32) -> u32 {
+            self.0
+        }
+    }
+    }
+
     #[test]
     pub fn it_works() {
         assert_eq!(public_with_no_args(), 1u32);
@@ -138,5 +179,9 @@ mod tests {
 
         public_with_no_return();
         private_with_no_return(1u32);
+
+        let foo = Foo(1u32);
+        assert_eq!(foo.pub_with_self(1u32), 1u32);
     }
 }
+
