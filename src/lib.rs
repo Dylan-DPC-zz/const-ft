@@ -163,10 +163,10 @@ mod tests {
     struct Foo(u32);
     impl Foo {
         const_ft! {
-        pub fn pub_with_self(&self, _x: u32) -> u32 {
-            self.0
+            pub fn pub_with_self(&self, _x: u32) -> u32 {
+                self.0
+            }
         }
-    }
     }
 
     #[test]
@@ -184,4 +184,3 @@ mod tests {
         assert_eq!(foo.pub_with_self(1u32), 1u32);
     }
 }
-
