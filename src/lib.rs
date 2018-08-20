@@ -118,6 +118,22 @@ macro_rules! const_ft {
         pub fn $fn_name(&$self_, $($arg : $typ,)*) $body
     };
 
+    (pub fn $fn_name:ident(&$self_: ident) -> $ret: ty $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name(&$self_) -> $ret $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name(&$self_) -> $ret $body
+    };
+
+    (pub fn $fn_name:ident(&$self_: ident) -> $body: block ) => {
+        #[cfg(feature = "const_fn")]
+        pub const fn $fn_name(&$self_) $body
+
+        #[cfg(not(feature = "const_fn"))]
+        pub fn $fn_name(&$self_) $body
+    };
+
 }
 
 #[cfg(test)]
@@ -167,6 +183,12 @@ mod tests {
                 self.0
             }
         }
+
+        const_ft! {
+            pub fn pub_with_self_and_no_args(&self) -> u32 {
+                self.0
+            }
+        }
     }
 
     #[test]
@@ -182,5 +204,6 @@ mod tests {
 
         let foo = Foo(1u32);
         assert_eq!(foo.pub_with_self(1u32), 1u32);
+        assert_eq!(foo.pub_with_self_and_no_args(), 1u32);
     }
 }
