@@ -1,8 +1,8 @@
 [package]
 name = "const-ft"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["dylan_DPC <dylan.dpc@gmail.com>"]
-description = "A library to generate and parse UUIDs."
+description = "Macro for wrapping const fn in a feature gate."
 documentation = "https://docs.rs/const-ft"
 exclude = [
     ".github/**",
